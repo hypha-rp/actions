@@ -19,7 +19,7 @@ inputs:
     default: ''
   github-token:
     description: 'GitHub Token'
-    required: true
+    required: false
 runs:
   using: 'composite'
   steps:
