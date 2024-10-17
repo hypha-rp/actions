@@ -17,15 +17,16 @@ inputs:
     description: 'Tags for the Docker image'
     required: false
     default: ''
+  github-token:
+    description: 'GitHub Token'
+    required: true
 runs:
   using: 'composite'
   steps:
     - name: Checkout
-      shell: bash
       uses: actions/checkout@v4
 
     - name: Set up Docker Buildx
-      shell: bash
       uses: docker/setup-buildx-action@v3
 
     - name: Login to GitHub Container Registry
@@ -34,7 +35,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.github-token }}
 
     - name: Build Container image
       uses: docker/build-push-action@v6
