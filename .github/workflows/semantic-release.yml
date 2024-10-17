@@ -46,4 +46,8 @@ jobs:
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.github-token }}
-        run: npx semantic-release
+        run: |
+          npx semantic-release
+          VERSION=$(cat VERSION)
+          echo "Resolved version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
