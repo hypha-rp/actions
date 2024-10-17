@@ -1,0 +1,33 @@
+name: 'Node Lint'
+description: 'Run ESLint and Prettier on a Node.js project'
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: true
+    default: '22'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Print Node.js version
+      run: echo "Using Node.js version ${{ inputs.node-version }}"
+      shell: bash
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+      shell: bash
+
+    - name: Run ESLint
+      run: npm run lint
+      shell: bash
+
+    - name: Run Prettier
+      run: npm run format -- --check
+      shell: bash
