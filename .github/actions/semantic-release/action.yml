@@ -5,6 +5,9 @@ inputs:
     description: 'Node.js version'
     required: true
     default: '22'
+  pat:
+    description: 'Personal Access Token'
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -12,7 +15,7 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        token: ${{ secrets.PAT }}
+        token: ${{ inputs.pat }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -31,7 +34,7 @@ runs:
       shell: bash
       id: semantic-release
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
+        GITHUB_TOKEN: ${{ inputs.pat }}
       run: |
         npx semantic-release
         VERSION=$(cat VERSION)
