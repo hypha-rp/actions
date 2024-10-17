@@ -5,10 +5,6 @@ inputs:
     description: 'Node.js version'
     required: true
     default: '22'
-secrets:
-  github-token:
-    description: 'GitHub Token'
-    required: true
 runs:
   using: 'composite'
   steps:
@@ -24,12 +20,15 @@ runs:
         node-version: ${{ inputs.node-version }}
 
     - name: Install dependencies
+      shell: bash
       run: npm clean-install
 
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      shell: bash
       run: npm audit signatures
 
     - name: Run semantic-release
+      shell: bash
       id: semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.github-token }}
