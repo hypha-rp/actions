@@ -37,7 +37,10 @@ runs:
         GITHUB_TOKEN: ${{ inputs.pat }}
       run: |
         npx semantic-release
-        VERSION=$(cat VERSION)
+        VERSION=""
+        if [ -f VERSION ]; then
+          VERSION=$(cat VERSION)
+        fi
         echo "Resolved version: $VERSION"
         echo "version=$VERSION" >> $GITHUB_OUTPUT
 outputs:
