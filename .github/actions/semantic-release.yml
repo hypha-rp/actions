@@ -1,0 +1,44 @@
+name: 'Semantic Release'
+description: 'Run semantic-release'
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: true
+    default: '22'
+secrets:
+  github-token:
+    description: 'GitHub Token'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.github-token }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install dependencies
+      run: npm clean-install
+
+    - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      run: npm audit signatures
+
+    - name: Run semantic-release
+      id: semantic-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.github-token }}
+      run: |
+        npx semantic-release
+        VERSION=$(cat VERSION)
+        echo "Resolved version: $VERSION"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+outputs:
+  version:
+    description: 'The version released by semantic-release'
+    value: ${{ steps.semantic-release.outputs.version }}
