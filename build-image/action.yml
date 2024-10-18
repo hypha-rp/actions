@@ -44,3 +44,4 @@ runs:
         file: ${{ inputs.dockerfile }}
         push: ${{ inputs.push }}
         tags: ${{ inputs.tags }}
+        platforms: linux/amd64,linux/arm64
